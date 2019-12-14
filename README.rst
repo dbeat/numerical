@@ -1,8 +1,8 @@
 *********
 NUMERICAL
 *********
-.. image:: https://app.codeship.com/projects/2734b900-f935-0137-e154-1aa3f3935b22/status?branch=master
-    :target: https://codeship.com/projects/376946
+.. image:: https://travis-ci.com/dbeat/numerical.svg?branch=master
+    :target: https://travis-ci.com/dbeat/numerical
 
 .. image:: https://codecov.io/bb/frnsroy/numerical/branch/master/graph/badge.svg?token=NF9GwEfvqy
   :target: https://codecov.io/bb/frnsroy/numerical
