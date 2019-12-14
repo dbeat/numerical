@@ -9,7 +9,9 @@ cache: # see https://docs.travis-ci.com/user/caching/
 
 addons:
   apt:
-    packages: lcov
+    packages: 
+      - lcov
+      - doxygen
 
 install:
 # (fake) install dependencies (usually involves wget, configure, make, ...)
@@ -31,6 +33,17 @@ after_success:
 # Uploading to CodeCov
 # '-f' specifies file(s) to use and disables manual coverage gathering and file search which has already been done above
 - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+
+# https://github.com/EmaroLab/docs/wiki/Automatic-deployment-Doxygen-documentation
+# Generate and deploy documentation
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: build/doc/html
+  github_token: $GH_REPO_TOKEN
+  on:
+    branch: master
+
 
 notifications:
   email:
