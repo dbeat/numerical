@@ -40,7 +40,7 @@ install:
   # install PETSc
   - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
   - cd petsc
-  - ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
+  - ./configure # --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
   - make -j$NBUILD
 
 script:
