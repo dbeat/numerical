@@ -29,9 +29,6 @@ addons:
 
 before_install:
   - sh ./get_mpich.sh
-  - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
-  - echo $CC
-  - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
 install:
   # install PETSc

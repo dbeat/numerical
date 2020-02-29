@@ -8,8 +8,8 @@ if [ -f petsc/README.md ]; then
   else
     echo "Updating PETSc source."
     git pull
-    echo "configuring and building mpich."
-    ./configure --with-mpi-dir=/usr/lib/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --with-mpi-dir=/usr/lib/mpich 
+    echo "configuring and building PETSc"
+    ./configure # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --with-mpi-dir=/usr/lib/mpich 
     make -j4
     cd -
   fi
