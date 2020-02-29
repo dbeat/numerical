@@ -9,11 +9,10 @@ cache: # see https://docs.travis-ci.com/user/caching/
   #- mpich
   - petsc
 
-# https://github.com/petsc/petsc/blob/master/.travis.yml
 env:
 
   global:
-    - FC=gfortran
+    #
 
 addons:
   apt:
@@ -22,7 +21,7 @@ addons:
       - libblas-dev
       - liblapack-dev
       - libmpich-dev
-      - libnuma-dev
+      # - libnuma-dev
       - lcov
       - doxygen
 
@@ -32,12 +31,6 @@ before_install:
 
 install:
   #
-
-env:
-
-  global:
-    - PETSC_DIR=$HOME/build/dbeat/numerical/petsc
-    - PETSC_ARCH=arch-linux2-c-debug
 
 script:
   - export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
