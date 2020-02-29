@@ -25,5 +25,3 @@ else
     make PETSC_DIR=$HOME/build/dbeat/numerical/petsc PETSC_ARCH=arch-linux2-c-debug check
     cd -
 fi
-export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
-export PETSC_ARCH=arch-linux2-c-debug
