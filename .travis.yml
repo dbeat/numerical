@@ -39,10 +39,11 @@ before_install:
 
 install:
   # install PETSc
-  - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
-  - cd petsc
-  - ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
-  - make -j$NBUILD
+  - sh ./get_petsc.sh
+  #- git clone -b maint https://gitlab.com/petsc/petsc.git petsc
+  #- cd petsc
+  #- ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
+  #- make -j$NBUILD
 
 script:
   - make check  # check PETSc installation

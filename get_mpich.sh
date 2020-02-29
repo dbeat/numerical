@@ -10,7 +10,7 @@ else
   cd mpich-3.4a2
   ./configure --prefix=`pwd`/../mpich --with-device=ch4:ucx --enable-shared
   make -j4
-  # make install
+  make install
   cd -
   rm -rf mpich-3.4a2
 fi
