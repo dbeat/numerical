@@ -9,7 +9,6 @@ cache: # see https://docs.travis-ci.com/user/caching/
   #- mpich
   - petsc
 
-
 # https://github.com/petsc/petsc/blob/master/.travis.yml
 env:
 
@@ -32,12 +31,12 @@ before_install:
   - sh ./get_petsc.sh
 
 install:
-  #- sh ./get_petsc.sh
+  #
 
 script:
   - export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
   - export PETSC_ARCH=arch-linux2-c-debug
-  - cd .. && ./build.sh  # build project
+  - sh ./build.sh  # build project
 
 after_success:
 # Create lcov report
