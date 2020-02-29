@@ -26,6 +26,7 @@ addons:
       - gfortran
       - libblas-dev
       - liblapack-dev
+      - libnuma-dev
       # - mpich
       - lcov
       - doxygen
