@@ -28,25 +28,23 @@ addons:
 
 before_install:
   - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
+  - echo $MPI
   - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
 install:
-# (fake) install dependencies (usually involves wget, configure, make, ...)
-# install into cache folder (build binaries+headers only, no sources and do NOT build there)
-  - mkdir -p $HOME/.cache
-  - touch $HOME/.cache/mydependency.so
+  # install PETSc
   - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
   - cd petsc
-  #- ./configure --with-cc=$CC --with-cxx=$CXX --with-fc=$FC --with-clanguage=${LANGUAGE:-C} --with-64-bit-indices=${INT64:-0} --with-scalar-type=${SCALAR:-real} --with-precision=${PRECISION:-double} --with-mpi=${MPI:-0} $BLASLAPACK COPTFLAGS="$OPTFLAGS" CXXOPTFLAGS="$OPTFLAGS" FOPTFLAGS="$OPTFLAGS" --with-cxx-dialect=0
-  - ./configure --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --download-fblaslapack
+  - ./configure --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich
   - make -j$NBUILD
 
 script:
-  - make check
-  - export PETSC_DIR=$HOME/petsc
+  - make check  # check PETSc installation
+  - echo $HOME
+  # add PETSc environment variables
+  - export PETSC_DIR=/home/travis/build/dbeat/numerical/petsc
   - export PETSC_ARCH=arch-linux2-c-debug
-  - cd ..
-  - ./build.sh
+  - cd .. && ./build.sh  # build project
 
 after_success:
 # Create lcov report
