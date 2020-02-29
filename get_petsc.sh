@@ -2,10 +2,11 @@ if [ -f petsc/README.md ]; then
   echo "PETSc directory exists."
   cd petsc
   make check
-  cd -
   if [ $? -eq 0 ]; then
     echo "PETSc installed -- nothing to build."
+    cd -
   else
+    cd -
     echo "Downloading PETSc source."
     git clone -b maint https://gitlab.com/petsc/petsc.git petsc
     echo "configuring and building mpich."

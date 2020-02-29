@@ -15,9 +15,6 @@ env:
 
   global:
     - FC=gfortran
-    - BLASLAPACK=
-    - PETSC_OPTIONS='-check_pointer_intensity 0 -malloc_test'
-    - OPTFLAGS='-O'
 
 addons:
   apt:
@@ -25,12 +22,14 @@ addons:
       - gfortran
       - libblas-dev
       - liblapack-dev
+      - libmpich-dev
       - libnuma-dev
       - lcov
       - doxygen
 
 before_install:
   - sh ./get_mpich.sh
+  - whereis mpich
   - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
   - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
