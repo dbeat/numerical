@@ -14,7 +14,7 @@ else
           --enable-alloca=true \
           --disable-long-double \
           --enable-threads=single \
-          --enable-fortran=no \
+          --enable-fortran=yes \
           --enable-fast=all \
           --enable-g=none \
           --enable-timing=none

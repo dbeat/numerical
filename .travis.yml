@@ -7,6 +7,7 @@ cache: # see https://docs.travis-ci.com/user/caching/
 - directories:
   - $HOME/.cache
   - mpich
+  - petsc
 
 
 # https://github.com/petsc/petsc/blob/master/.travis.yml
@@ -25,13 +26,13 @@ addons:
       - gfortran
       - libblas-dev
       - liblapack-dev
+      - mpich
       - lcov
       - doxygen
 
 before_install:
-  - sh ./get_mpich.sh
-  - ls
-  - echo $HOME
+  # - sh ./get_mpich.sh
+  - if [[ -n "$MPI" ]]; then echo "MPI INSTALLED"; fi
   - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
   - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
@@ -39,12 +40,12 @@ install:
   # install PETSc
   - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
   - cd petsc
-  - ./configure --with-mpi-dir=/home/travis/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
+  - ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
   - make -j$NBUILD
 
 script:
   - make check  # check PETSc installation
-  - export PETSC_DIR=/home/travis/build/dbeat/numerical/petsc
+  - export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
   - export PETSC_ARCH=arch-linux2-c-debug
   - cd .. && ./build.sh  # build project
 
