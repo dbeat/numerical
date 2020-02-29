@@ -4,7 +4,7 @@
 #=============================================================================
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
-project(Numerical CXX)
+project(Numerical CXX C)
 set(PROJECT_VERSION_RELEASE 0)
 set(PROJECT_VERSION_MAJOR "2019")
 set(PROJECT_VERSION_MINOR "0")
@@ -17,7 +17,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Don't use e.g. GNU extension (like -std=gnu++11) for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
-
 
 
 # Check compiler version
@@ -37,10 +36,12 @@ set(CMAKE_BUILD_TYPE Debug)  # for valgrind target
 # Debugging Options
 set (CMAKE_VERBOSE_MAKEFILE 0) # Use 1 for debugging, 0 otherwise.
 
+set(PETSC_DIR $ENV{PETSC_DIR})
+set(PETSC_ARCH $ENV{PETSC_ARCH})
 set(NUMERICAL_INCLUDE_DIR ${PROJECT_BINARY_DIR}/include)
 include_directories(${NUMERICAL_INCLUDE_DIR})
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_CONFIG_PATH ${PROJECT_SOURCE_DIR}/cmake.config)
 
 set (platform)
@@ -58,6 +59,8 @@ elseif (WIN32)
       )
 endif()
 
+# https://github.com/jedbrown/cmake-modules
+find_package (PETSc REQUIRED) # find_package (PETSc COMPONENT CXX REQUIRED)
 find_package(Git REQUIRED)
 set(EIGEN3_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/third_party)
 # find_package(Eigen3 REQUIRED)
@@ -68,6 +71,7 @@ message("-- The Eigen3 include dir is: ${EIGEN3_INCLUDE_DIR}")
 message("-- The Cathc2 include dir is: ${Catch2_INCLUDE_DIRS}")
 message("-- The spdlog include dir is: ${spdlog_INCLUDE_DIR}")
 
+include_directories(${PETSC_INCLUDES})
 include_directories(${EIGEN3_INCLUDE_DIR})
 include_directories(${Catch2_INCLUDE_DIRS})
 include_directories(${spdlog_INCLUDE_DIR})
@@ -123,6 +127,13 @@ add_subdirectory(doc)
 
 # target diffusion
 add_subdirectory(${PROJECT_SOURCE_DIR}/bench/diffusion EXCLUDE_FROM_ALL)
+
+# target intricacies
+add_definitions(${PETSC_DEFINITIONS})
+set (NUMERICAL_DEPENDENT_LIBRARIES "${PETSC_LIBRARIES}")
+include_directories(${PETSC_DIR}/lib/petsc/conf/variables)
+include_directories(${PETSC_DIR}/lib/petsc/conf/rules)
+add_subdirectory(${PROJECT_SOURCE_DIR}/intricacies EXCLUDE_FROM_ALL)
 
 
 option (BUILD_TESTING "Build the testing tree." ON)

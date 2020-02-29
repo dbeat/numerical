@@ -6,19 +6,77 @@ cache: # see https://docs.travis-ci.com/user/caching/
 - directories:
   - $HOME/.cache
 
+
+# https://github.com/petsc/petsc/blob/master/.travis.yml
+env:
+
+  global:
+    - FC=gfortran
+    - BLASLAPACK=
+    - PETSC_OPTIONS='-check_pointer_intensity 0 -malloc_test'
+    - OPTFLAGS='-O'
+
+  matrix:
+
+    - INT64=0  SCALAR=real     PRECISION=single
+    - INT64=0  SCALAR=real     PRECISION=double
+    - INT64=0  SCALAR=complex  PRECISION=single
+    - INT64=0  SCALAR=complex  PRECISION=double
+
+    - INT64=1  SCALAR=real     PRECISION=single
+    - INT64=1  SCALAR=real     PRECISION=double
+    - INT64=1  SCALAR=complex  PRECISION=single
+    - INT64=1  SCALAR=complex  PRECISION=double
+
+    - INT64=0  SCALAR=complex  PRECISION=single  LANGUAGE=C++
+    - INT64=0  SCALAR=complex  PRECISION=double  LANGUAGE=C++
+    - INT64=1  SCALAR=complex  PRECISION=single  LANGUAGE=C++
+    - INT64=1  SCALAR=complex  PRECISION=double  LANGUAGE=C++
+
+    - INT64=0  SCALAR=real     PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
+    - INT64=0  SCALAR=complex  PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
+    - INT64=1  SCALAR=real     PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
+    - INT64=1  SCALAR=complex  PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
+
+matrix:
+
+  include:
+
+    - env: INT64=1 SCALAR=complex LANGUAGE=C
+      compiler: clang
+
+    - env: INT64=1 SCALAR=complex LANGUAGE=C++
+      compiler: clang
+
 addons:
   apt:
-    packages: 
+    packages:
+      - gfortran
+      - libblas-dev
+      - liblapack-dev
       - lcov
       - doxygen
+
+before_install:
+  - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
+  - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
 install:
 # (fake) install dependencies (usually involves wget, configure, make, ...)
 # install into cache folder (build binaries+headers only, no sources and do NOT build there)
-- mkdir -p $HOME/.cache
-- touch $HOME/.cache/mydependency.so
+  - mkdir -p $HOME/.cache
+  - touch $HOME/.cache/mydependency.so
+  - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
+  - cd petsc
+  - ./configure --with-cc=$CC --with-cxx=$CXX --with-fc=$FC --with-clanguage=${LANGUAGE:-C} --with-64-bit-indices=${INT64:-0} --with-scalar-type=${SCALAR:-real} --with-precision=${PRECISION:-double} --with-mpi=${MPI:-0} $BLASLAPACK COPTFLAGS="$OPTFLAGS" CXXOPTFLAGS="$OPTFLAGS" FOPTFLAGS="$OPTFLAGS" --with-cxx-dialect=0
+  - make -j$NBUILD
 
-script: ./build.sh
+script:
+  - make check
+  - cd $HOME
+  - export PETSC_DIR = $HOME/petsc
+  - export PETSC_ARCH = "arch-linux2-c-debug"
+  - ./build.sh
 
 after_success:
 # Create lcov report
