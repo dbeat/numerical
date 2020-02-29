@@ -8,6 +8,7 @@ cache: # see https://docs.travis-ci.com/user/caching/
 
 
 # https://github.com/petsc/petsc/blob/master/.travis.yml
+# or https://github.com/JuliaParallel/PETSc.jl ?
 env:
 
   global:
@@ -15,6 +16,8 @@ env:
     - BLASLAPACK=
     - PETSC_OPTIONS='-check_pointer_intensity 0 -malloc_test'
     - OPTFLAGS='-O'
+    - PETSC_DIR=$HOME/petsc
+    - PETSC_ARCH=arch-linux2-c-debug
 
 addons:
   apt:
@@ -43,8 +46,6 @@ install:
 script:
   - make check
   - cd $HOME
-  - export PETSC_DIR = $HOME/petsc
-  - export PETSC_ARCH = "arch-linux2-c-debug"
   - ./build.sh
 
 after_success:
