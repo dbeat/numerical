@@ -10,7 +10,7 @@ if [ -f petsc/README.md ]; then
     git clone -b maint https://gitlab.com/petsc/petsc.git petsc
     echo "configuring and building mpich."
     cd petsc
-    ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
+    ./configure --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --with-mpi-dir=$HOME/build/dbeat/numerical/mpich
     make -j4
     cd -
   fi
@@ -20,7 +20,7 @@ else
     git clone -b maint https://gitlab.com/petsc/petsc.git petsc
     echo "configuring and building mpich."
     cd petsc
-    ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
+    ./configure --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --with-mpi-dir=$HOME/build/dbeat/numerical/mpich
     make -j4
     cd -
 fi
