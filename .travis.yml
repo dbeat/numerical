@@ -16,8 +16,6 @@ env:
     - BLASLAPACK=
     - PETSC_OPTIONS='-check_pointer_intensity 0 -malloc_test'
     - OPTFLAGS='-O'
-    - PETSC_DIR=$HOME/petsc
-    - PETSC_ARCH=arch-linux2-c-debug
 
 addons:
   apt:
@@ -30,6 +28,8 @@ addons:
 
 before_install:
   - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
+  - export TT=$HOME/petsc
+  - echo $TT
   - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
 install:
@@ -37,6 +37,7 @@ install:
 # install into cache folder (build binaries+headers only, no sources and do NOT build there)
   - mkdir -p $HOME/.cache
   - touch $HOME/.cache/mydependency.so
+  - cd $HOME
   - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
   - cd petsc
   #- ./configure --with-cc=$CC --with-cxx=$CXX --with-fc=$FC --with-clanguage=${LANGUAGE:-C} --with-64-bit-indices=${INT64:-0} --with-scalar-type=${SCALAR:-real} --with-precision=${PRECISION:-double} --with-mpi=${MPI:-0} $BLASLAPACK COPTFLAGS="$OPTFLAGS" CXXOPTFLAGS="$OPTFLAGS" FOPTFLAGS="$OPTFLAGS" --with-cxx-dialect=0
@@ -45,6 +46,8 @@ install:
 
 script:
   - make check
+  - export PETSC_DIR=$HOME/petsc
+  - export PETSC_ARCH=arch-linux2-c-debug
   - cd $HOME
   - ./build.sh
 
