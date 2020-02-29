@@ -6,12 +6,10 @@ if [ -f petsc/README.md ]; then
     echo "PETSc installed -- nothing to build."
     cd -
   else
-    cd -
-    echo "Downloading PETSc source."
-    git clone -b maint https://gitlab.com/petsc/petsc.git petsc
+    echo "Updating PETSc source."
+    git pull
     echo "configuring and building mpich."
-    cd petsc
-    ./configure --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --with-mpi-dir=$HOME/build/dbeat/numerical/mpich
+    ./configure --with-mpi-dir=/usr/lib/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich  # --with-mpi-dir=/usr/lib/mpich 
     make -j4
     cd -
   fi
