@@ -8,9 +8,7 @@ else
   rm mpich-3.4a2.tar.gz
   echo "configuring and building mpich."
   cd mpich-3.4a2
-  ./configure \
-          --prefix=`pwd`/../mpich \
-          --enable-fast=all \
+  ./configure --prefix=`pwd`/../mpich
   make -j4
   make install
   cd -
