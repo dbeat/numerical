@@ -26,13 +26,14 @@ addons:
       - gfortran
       - libblas-dev
       - liblapack-dev
-      - mpich
+      # - mpich
       - lcov
       - doxygen
 
 before_install:
-  # - sh ./get_mpich.sh
+  - sh ./get_mpich.sh
   - if [[ -n "$MPI" ]]; then echo "MPI INSTALLED"; fi
+  - whereis mpich
   - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
   - export NBUILD=`getconf _NPROCESSORS_ONLN`
 
@@ -40,7 +41,7 @@ install:
   # install PETSc
   - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
   - cd petsc
-  - ./configure # --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
+  - ./configure --with-mpi-dir=$HOME/build/dbeat/numerical/mpich # --with-cc=gcc --with-cxx=g++ --with-fc=gfortran # --download-mpich
   - make -j$NBUILD
 
 script:
