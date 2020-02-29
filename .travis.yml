@@ -32,7 +32,6 @@ addons:
 
 before_install:
   - sh ./get_mpich.sh
-  - if [[ -n "$MPI" ]]; then echo "MPI INSTALLED"; fi
   - whereis mpich
   - if [[ -n "$MPI" ]]; then export CC=mpicc CXX=mpicxx FC=mpifort; fi
   - export NBUILD=`getconf _NPROCESSORS_ONLN`
