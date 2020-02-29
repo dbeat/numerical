@@ -16,38 +16,6 @@ env:
     - PETSC_OPTIONS='-check_pointer_intensity 0 -malloc_test'
     - OPTFLAGS='-O'
 
-  matrix:
-
-    - INT64=0  SCALAR=real     PRECISION=single
-    - INT64=0  SCALAR=real     PRECISION=double
-    - INT64=0  SCALAR=complex  PRECISION=single
-    - INT64=0  SCALAR=complex  PRECISION=double
-
-    - INT64=1  SCALAR=real     PRECISION=single
-    - INT64=1  SCALAR=real     PRECISION=double
-    - INT64=1  SCALAR=complex  PRECISION=single
-    - INT64=1  SCALAR=complex  PRECISION=double
-
-    - INT64=0  SCALAR=complex  PRECISION=single  LANGUAGE=C++
-    - INT64=0  SCALAR=complex  PRECISION=double  LANGUAGE=C++
-    - INT64=1  SCALAR=complex  PRECISION=single  LANGUAGE=C++
-    - INT64=1  SCALAR=complex  PRECISION=double  LANGUAGE=C++
-
-    - INT64=0  SCALAR=real     PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
-    - INT64=0  SCALAR=complex  PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
-    - INT64=1  SCALAR=real     PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
-    - INT64=1  SCALAR=complex  PRECISION=__float128 BLASLAPACK="--download-f2cblaslapack=1"
-
-matrix:
-
-  include:
-
-    - env: INT64=1 SCALAR=complex LANGUAGE=C
-      compiler: clang
-
-    - env: INT64=1 SCALAR=complex LANGUAGE=C++
-      compiler: clang
-
 addons:
   apt:
     packages:
@@ -68,7 +36,8 @@ install:
   - touch $HOME/.cache/mydependency.so
   - git clone -b maint https://gitlab.com/petsc/petsc.git petsc
   - cd petsc
-  - ./configure --with-cc=$CC --with-cxx=$CXX --with-fc=$FC --with-clanguage=${LANGUAGE:-C} --with-64-bit-indices=${INT64:-0} --with-scalar-type=${SCALAR:-real} --with-precision=${PRECISION:-double} --with-mpi=${MPI:-0} $BLASLAPACK COPTFLAGS="$OPTFLAGS" CXXOPTFLAGS="$OPTFLAGS" FOPTFLAGS="$OPTFLAGS" --with-cxx-dialect=0
+  #- ./configure --with-cc=$CC --with-cxx=$CXX --with-fc=$FC --with-clanguage=${LANGUAGE:-C} --with-64-bit-indices=${INT64:-0} --with-scalar-type=${SCALAR:-real} --with-precision=${PRECISION:-double} --with-mpi=${MPI:-0} $BLASLAPACK COPTFLAGS="$OPTFLAGS" CXXOPTFLAGS="$OPTFLAGS" FOPTFLAGS="$OPTFLAGS" --with-cxx-dialect=0
+  - ./configure --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --download-mpich --download-fblaslapack
   - make -j$NBUILD
 
 script:
