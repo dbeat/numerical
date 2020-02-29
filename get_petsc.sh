@@ -1,8 +1,8 @@
 if [ -f petsc/README.md ]; then
   echo "PETSc directory exists."
   cd petsc
-  make check
-  if [ $? -eq 99 ]; then
+  make PETSC_DIR=$HOME/build/dbeat/numerical/petsc PETSC_ARCH=arch-linux2-c-debug check
+  if [ $? -eq 0 ]; then
     echo "PETSc installed -- nothing to build."
     cd -
   else
@@ -25,3 +25,5 @@ else
     make PETSC_DIR=$HOME/build/dbeat/numerical/petsc PETSC_ARCH=arch-linux2-c-debug check
     cd -
 fi
+export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
+export PETSC_ARCH=arch-linux2-c-debug

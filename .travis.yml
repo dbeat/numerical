@@ -20,8 +20,8 @@ addons:
       - gfortran
       - libblas-dev
       - liblapack-dev
-      - libmpich-dev
-      # - libnuma-dev
+      #- libmpich-dev
+      #- libnuma-dev
       - lcov
       - doxygen
 
@@ -33,9 +33,6 @@ install:
   #
 
 script:
-  - export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
-  - export PETSC_ARCH=arch-linux2-c-debug
-  - echo $PETSC_DIR
   - sh ./build.sh  # build project
 
 after_success:
