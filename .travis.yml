@@ -25,7 +25,6 @@ addons:
       - gfortran
       - libblas-dev
       - liblapack-dev
-      - libmpi-dev
       - lcov
       - doxygen
 
