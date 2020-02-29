@@ -10,14 +10,7 @@ else
   cd mpich-3.4a2
   ./configure \
           --prefix=`pwd`/../mpich \
-          --enable-static=false \
-          --enable-alloca=true \
-          --disable-long-double \
-          --enable-threads=single \
-          --enable-fortran=yes \
           --enable-fast=all \
-          --enable-g=none \
-          --enable-timing=none
   make -j4
   make install
   cd -
