@@ -6,7 +6,7 @@ compiler: gcc
 cache: # see https://docs.travis-ci.com/user/caching/
 - directories:
   - $HOME/.cache
-  - mpich
+  #- mpich
   - petsc
 
 
@@ -28,14 +28,13 @@ addons:
       - doxygen
 
 before_install:
-  - sh ./get_mpich.sh
-
-install:
-  # install PETSc
+  #- sh ./get_mpich.sh
   - sh ./get_petsc.sh
 
+install:
+  #- sh ./get_petsc.sh
+
 script:
-  - make check  # check PETSc installation
   - export PETSC_DIR=$HOME/build/dbeat/numerical/petsc
   - export PETSC_ARCH=arch-linux2-c-debug
   - cd .. && ./build.sh  # build project
